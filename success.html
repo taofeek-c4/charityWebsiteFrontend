@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You - Hope Foundation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .success-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: scaleIn 0.5s ease-out 0.2s both;
+        }
+
+        @keyframes scaleIn {
+            from {
+                transform: scale(0);
+            }
+            to {
+                transform: scale(1);
+            }
+        }
+
+        .checkmark {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #10b981;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .checkmark::after {
+            content: '';
+            position: absolute;
+            left: 14px;
+            top: 6px;
+            width: 12px;
+            height: 24px;
+            border: solid #10b981;
+            border-width: 0 4px 4px 0;
+            transform: rotate(45deg);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: fadeIn 0.6s ease-out 0.3s both;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            animation: fadeIn 0.6s ease-out 0.4s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .donation-details {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .detail-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #e0e0e0;
+        }
+
+        .detail-row:last-child {
+            border-bottom: none;
+        }
+
+        .detail-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .detail-value {
+            color: #333;
+            font-weight: 600;
+        }
+
+        .amount-highlight {
+            font-size: 1.3em;
+            color: #10b981;
+        }
+
+        .impact-section {
+            background: linear-gradient(135deg, #f0f9ff 0%, #e0f2fe 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .impact-section h2 {
+            color: #0369a1;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .impact-section p {
+            color: #0c4a6e;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .impact-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .impact-list li {
+            padding: 8px 0 8px 30px;
+            position: relative;
+            color: #0c4a6e;
+        }
+
+        .impact-list li::before {
+            content: '✓';
+            position: absolute;
+            left: 0;
+            color: #10b981;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9ff;
+        }
+
+        .social-share {
+            text-align: center;
+            padding-top: 20px;
+            border-top: 1px solid #e0e0e0;
+        }
+
+        .social-share p {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .social-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .social-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .social-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .social-btn.twitter {
+            background: #1da1f2;
+        }
+
+        .social-btn.facebook {
+            background: #4267B2;
+        }
+
+        .social-btn.linkedin {
+            background: #0077b5;
+        }
+
+        .social-btn.email {
+            background: #ea4335;
+        }
+
+        .footer-note {
+            text-align: center;
+            color: #999;
+            font-size: 0.9em;
+            margin-top: 25px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="success-icon">
+                <div class="checkmark"></div>
+            </div>
+            <h1>Thank You!</h1>
+            <p>Your donation has been successfully processed</p>
+        </div>
+
+        <div class="content">
+            <div class="donation-details">
+                <div class="detail-row">
+                    <span class="detail-label">Donation Amount</span>
+                    <span class="detail-value amount-highlight">$<span id="amount">50.00</span></span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Transaction ID</span>
+                    <span class="detail-value" id="transactionId">TXN123456789</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Date</span>
+                    <span class="detail-value" id="date">October 29, 2025</span>
+                </div>
+                <div class="detail-row">
+                    <span class="detail-label">Email Receipt</span>
+                    <span class="detail-value" id="email">Sent to your email</span>
+                </div>
+            </div>
+
+            <div class="impact-section">
+                <h2>Your Impact</h2>
+                <p>Your generous contribution will help us:</p>
+                <ul class="impact-list">
+                    <li>Provide essential resources to families in need</li>
+                    <li>Support educational programs for children</li>
+                    <li>Deliver healthcare services to underserved communities</li>
+                    <li>Create sustainable solutions for lasting change</li>
+                </ul>
+            </div>
+
+            <div class="action-buttons">
+                <a href="/" class="btn btn-primary">Return Home</a>
+                <a href="#" onclick="window.print(); return false;" class="btn btn-secondary">Print Receipt</a>
+            </div>
+
+            <div class="social-share">
+                <p>Share your support and inspire others:</p>
+                <div class="social-buttons">
+                    <a href="#" class="social-btn twitter" title="Share on Twitter">𝕏</a>
+                    <a href="#" class="social-btn facebook" title="Share on Facebook">f</a>
+                    <a href="#" class="social-btn linkedin" title="Share on LinkedIn">in</a>
+                    <a href="#" class="social-btn email" title="Share via Email">✉</a>
+                </div>
+            </div>
+
+            <div class="footer-note">
+                <p>A confirmation email has been sent to your inbox.</p>
+                <p>Questions? Contact us at support@hopefoundation.org</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters to display donation details
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Update page with donation details
+        window.addEventListener('DOMContentLoaded', function() {
+            const amount = getUrlParameter('amount');
+            const txnId = getUrlParameter('txn_id');
+            const userEmail = getUrlParameter('email');
+
+            if (amount) {
+                document.getElementById('amount').textContent = parseFloat(amount).toFixed(2);
+            }
+
+            if (txnId) {
+                document.getElementById('transactionId').textContent = txnId;
+            }
+
+            if (userEmail) {
+                document.getElementById('email').textContent = userEmail;
+            }
+
+            // Set current date
+            const options = { year: 'numeric', month: 'long', day: 'numeric' };
+            document.getElementById('date').textContent = new Date().toLocaleDateString('en-US', options);
+        });
+    </script>
+</body>
+</html>

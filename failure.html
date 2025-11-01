@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Failed - Hope Foundation</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.6s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+            color: white;
+            padding: 50px 30px;
+            text-align: center;
+            position: relative;
+        }
+
+        .error-icon {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: shake 0.5s ease-out 0.2s both;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .error-x {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #ef4444;
+            border-radius: 50%;
+            position: relative;
+        }
+
+        .error-x::before,
+        .error-x::after {
+            content: '';
+            position: absolute;
+            width: 30px;
+            height: 4px;
+            background: #ef4444;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(45deg);
+        }
+
+        .error-x::after {
+            transform: translate(-50%, -50%) rotate(-45deg);
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            animation: fadeIn 0.6s ease-out 0.3s both;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.95;
+            animation: fadeIn 0.6s ease-out 0.4s both;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .content {
+            padding: 40px 30px;
+        }
+
+        .error-details {
+            background: #fef2f2;
+            border-left: 4px solid #ef4444;
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 30px;
+        }
+
+        .error-details h3 {
+            color: #991b1b;
+            margin-bottom: 10px;
+            font-size: 1.1em;
+        }
+
+        .error-details p {
+            color: #7f1d1d;
+            line-height: 1.6;
+            margin-bottom: 8px;
+        }
+
+        .error-code {
+            font-family: 'Courier New', monospace;
+            background: white;
+            padding: 8px 12px;
+            border-radius: 4px;
+            display: inline-block;
+            margin-top: 10px;
+            font-size: 0.9em;
+            color: #666;
+        }
+
+        .common-reasons {
+            background: #f8f9fa;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+        }
+
+        .common-reasons h2 {
+            color: #333;
+            margin-bottom: 15px;
+            font-size: 1.3em;
+        }
+
+        .reasons-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .reasons-list li {
+            padding: 10px 0 10px 35px;
+            position: relative;
+            color: #555;
+            line-height: 1.5;
+        }
+
+        .reasons-list li::before {
+            content: '!';
+            position: absolute;
+            left: 0;
+            width: 24px;
+            height: 24px;
+            background: #fbbf24;
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 0.9em;
+        }
+
+        .help-section {
+            background: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 100%);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .help-section h3 {
+            color: #0369a1;
+            margin-bottom: 10px;
+        }
+
+        .help-section p {
+            color: #0c4a6e;
+            margin-bottom: 15px;
+        }
+
+        .contact-info {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .contact-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #0369a1;
+            font-weight: 600;
+        }
+
+        .action-buttons {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .btn {
+            padding: 14px 20px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: white;
+            color: #667eea;
+            border: 2px solid #667eea;
+        }
+
+        .btn-secondary:hover {
+            background: #f8f9ff;
+        }
+
+        .reassurance {
+            text-align: center;
+            color: #666;
+            font-size: 0.95em;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .reassurance strong {
+            color: #333;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 480px) {
+            .action-buttons {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="error-icon">
+                <div class="error-x"></div>
+            </div>
+            <h1>Payment Failed</h1>
+            <p>We couldn't process your donation</p>
+        </div>
+
+        <div class="content">
+            <div class="error-details">
+                <h3>What happened?</h3>
+                <p id="errorMessage">Your payment could not be completed at this time. No charges have been made to your account.</p>
+                <span class="error-code" id="errorCode">Error Code: PAYMENT_FAILED</span>
+            </div>
+
+            <div class="common-reasons">
+                <h2>Common Reasons for Payment Failures</h2>
+                <ul class="reasons-list">
+                    <li>Insufficient funds in your account</li>
+                    <li>Incorrect card details or expired card</li>
+                    <li>Bank declined the transaction for security reasons</li>
+                    <li>Payment method does not support international transactions</li>
+                    <li>Network or connection timeout during processing</li>
+                </ul>
+            </div>
+
+            <div class="help-section">
+                <h3>Need Help?</h3>
+                <p>Our support team is here to assist you</p>
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <span>📧</span>
+                        <span>support@hopefoundation.org</span>
+                    </div>
+                    <div class="contact-item">
+                        <span>📞</span>
+                        <span>1-800-HOPE-123</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="action-buttons">
+                <a href="javascript:history.back()" class="btn btn-primary">Try Again</a>
+                <a href="/" class="btn btn-secondary">Return Home</a>
+            </div>
+
+            <div class="reassurance">
+                <strong>Your security is our priority</strong>
+                No charges have been made to your account. All payment information is securely encrypted and never stored on our servers.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Parse URL parameters for error details
+        function getUrlParameter(name) {
+            name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
+            const regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
+            const results = regex.exec(location.search);
+            return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
+        }
+
+        // Update page with error details if provided
+        window.addEventListener('DOMContentLoaded', function() {
+            const errorMessage = getUrlParameter('error');
+            const errorCode = getUrlParameter('code');
+
+            if (errorMessage) {
+                document.getElementById('errorMessage').textContent = errorMessage;
+            }
+
+            if (errorCode) {
+                document.getElementById('errorCode').textContent = 'Error Code: ' + errorCode;
+            }
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,546 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hope Foundation - Make a Difference</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            width: 100%;
+            overflow: hidden;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.1em;
+            opacity: 0.95;
+        }
+
+        .form-container {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 8px;
+            color: #333;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        input[type="text"],
+        input[type="email"],
+        input[type="number"] {
+            width: 100%;
+            padding: 12px 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: all 0.3s ease;
+        }
+
+        input[type="text"]:focus,
+        input[type="email"]:focus,
+        input[type="number"]:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .anonymous-toggle {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .anonymous-toggle:hover {
+            background: #e9ecef;
+        }
+
+        .anonymous-toggle input[type="checkbox"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+
+        .anonymous-toggle label {
+            margin: 0;
+            cursor: pointer;
+            flex: 1;
+        }
+
+        .donor-info {
+            transition: all 0.3s ease;
+            overflow: hidden;
+        }
+
+        .donor-info.hidden {
+            max-height: 0;
+            opacity: 0;
+            margin: 0;
+        }
+
+        .amount-options {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .amount-btn {
+            padding: 15px;
+            border: 2px solid #e0e0e0;
+            background: white;
+            border-radius: 8px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .amount-btn:hover {
+            border-color: #667eea;
+            background: #f8f9ff;
+        }
+
+        .amount-btn.selected {
+            border-color: #667eea;
+            background: #667eea;
+            color: white;
+        }
+
+        .custom-amount {
+            margin-top: 15px;
+        }
+
+        .donate-btn {
+            width: 100%;
+            padding: 16px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 1.2em;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .donate-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .donate-btn:active {
+            transform: translateY(0);
+        }
+
+        .donate-btn:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .donate-btn.processing {
+            background: #999;
+            cursor: wait;
+        }
+
+        .error-message {
+            color: #dc3545;
+            font-size: 0.9em;
+            margin-top: 5px;
+            display: none;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        .impact-note {
+            text-align: center;
+            color: #666;
+            font-size: 0.9em;
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 8px;
+        }
+
+        .processing-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .processing-overlay.show {
+            display: flex;
+        }
+
+        .processing-content {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 300px;
+        }
+
+        .spinner {
+            width: 50px;
+            height: 50px;
+            border: 5px solid #f3f3f3;
+            border-top: 5px solid #667eea;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .processing-content h3 {
+            color: #333;
+            margin-bottom: 10px;
+        }
+
+        .processing-content p {
+            color: #666;
+        }
+
+        .alert {
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 8px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            color: #0c5460;
+            border: 1px solid #bee5eb;
+        }
+    </style>
+</head>
+<body>
+    <div class="processing-overlay" id="processingOverlay">
+        <div class="processing-content">
+            <div class="spinner"></div>
+            <h3>Processing Payment</h3>
+            <p>Please wait while we process your donation...</p>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>Hope Foundation</h1>
+            <p>Every contribution makes a difference</p>
+        </div>
+
+        <div class="form-container">
+            <div id="alertBox" class="alert"></div>
+            
+            <form id="donationForm">
+                <div class="anonymous-toggle" onclick="toggleAnonymous()">
+                    <input type="checkbox" id="anonymousCheck">
+                    <label for="anonymousCheck">Donate Anonymously</label>
+                </div>
+
+                <div id="donorInfo" class="donor-info">
+                    <div class="form-group">
+                        <label for="name">Full Name</label>
+                        <input type="text" id="name" placeholder="Enter your name">
+                        <div class="error-message" id="nameError">Please enter your name</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="email">Email Address</label>
+                        <input type="email" id="email" placeholder="Enter your email">
+                        <div class="error-message" id="emailError">Please enter a valid email</div>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Select Amount</label>
+                    <div class="amount-options">
+                        <button type="button" class="amount-btn" data-amount="10">₦10</button>
+                        <button type="button" class="amount-btn" data-amount="25">₦25</button>
+                        <button type="button" class="amount-btn" data-amount="50">₦50</button>
+                        <button type="button" class="amount-btn" data-amount="100">₦100</button>
+                        <button type="button" class="amount-btn" data-amount="250">₦250</button>
+                        <button type="button" class="amount-btn" data-amount="500">₦500</button>
+                    </div>
+                    <div class="custom-amount">
+                        <label for="customAmount">Or enter custom amount (₦)</label>
+                        <input type="number" id="customAmount" placeholder="Enter amount" min="1" step="0.01">
+                        <div class="error-message" id="amountError">Please select or enter an amount</div>
+                    </div>
+                </div>
+
+                <button type="submit" class="donate-btn">Donate Now</button>
+
+                <div class="impact-note">
+                    Your generosity helps us provide essential services to communities in need. Thank you for your support!
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let selectedAmount = null;
+        const API_BASE_URL = 'https://localhost:7200/api/Donations';
+
+        // Show alert message
+        function showAlert(message, type = 'error') {
+            const alertBox = document.getElementById('alertBox');
+            alertBox.textContent = message;
+            alertBox.className = `alert alert-${type} show`;
+            setTimeout(() => {
+                alertBox.classList.remove('show');
+            }, 5000);
+        }
+
+        // Toggle anonymous donation
+        function toggleAnonymous() {
+            const checkbox = document.getElementById('anonymousCheck');
+            const donorInfo = document.getElementById('donorInfo');
+            
+            if (checkbox.checked) {
+                donorInfo.classList.add('hidden');
+            } else {
+                donorInfo.classList.remove('hidden');
+            }
+        }
+
+        // Handle amount button selection
+        document.querySelectorAll('.amount-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+                this.classList.add('selected');
+                selectedAmount = this.dataset.amount;
+                document.getElementById('customAmount').value = '';
+            });
+        });
+
+        // Handle custom amount input
+        document.getElementById('customAmount').addEventListener('input', function() {
+            if (this.value) {
+                document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
+                selectedAmount = this.value;
+            }
+        });
+
+        // Process payment through API
+        async function processPayment(donationData) {
+            try {
+                console.log('Sending donation data:', donationData);
+                
+                const response = await fetch(`${API_BASE_URL}/initiate`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify(donationData)
+                });
+
+                console.log('Response status:', response.status);
+
+                // Check if response is ok
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('Error response:', errorText);
+                    
+                    let errorData = {};
+                    try {
+                        errorData = JSON.parse(errorText);
+                    } catch (e) {
+                        errorData = { message: errorText };
+                    }
+                    
+                    throw {
+                        message: errorData.message || errorData.title || `Server error: ${response.status}`,
+                        errorCode: errorData.errorCode || response.status,
+                        status: response.status,
+                        details: errorData
+                    };
+                }
+
+                const result = await response.json();
+                console.log('Success response:', result);
+                return result;
+                
+            } catch (error) {
+                console.error('Payment processing error:', error);
+                // Handle network errors
+                if (error.name === 'TypeError' && error.message.includes('fetch')) {
+                    throw {
+                        message: 'Unable to connect to the server. Please check your connection.',
+                        errorCode: 'NETWORK_ERROR'
+                    };
+                }
+                throw error;
+            }
+        }
+
+        // Form submission
+        document.getElementById('donationForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            // Reset error messages
+            document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
+            document.getElementById('alertBox').classList.remove('show');
+            
+            const isAnonymous = document.getElementById('anonymousCheck').checked;
+            const name = document.getElementById('name').value.trim();
+            const email = document.getElementById('email').value.trim();
+            const customAmount = document.getElementById('customAmount').value;
+            
+            let isValid = true;
+
+            // Validate donor info if not anonymous
+            if (!isAnonymous) {
+                if (!name) {
+                    document.getElementById('nameError').classList.add('show');
+                    isValid = false;
+                }
+                if (!email || !email.includes('@')) {
+                    document.getElementById('emailError').classList.add('show');
+                    isValid = false;
+                }
+            }
+
+            // Validate amount
+            const finalAmount = customAmount || selectedAmount;
+            if (!finalAmount || parseFloat(finalAmount) <= 0) {
+                document.getElementById('amountError').classList.add('show');
+                isValid = false;
+            }
+
+            if (isValid) {
+                // Prepare donation data - match your API's expected format
+                const donationData = {
+                    name: isAnonymous ? "Anonymous" : name,
+                    email: isAnonymous ? "anonymous@donor.com" : email,
+                    amount: parseFloat(finalAmount),
+                    isAnonymous: isAnonymous
+                };
+
+                // Show processing overlay
+                document.getElementById('processingOverlay').classList.add('show');
+
+                try {
+                    // Process payment through your API
+                    const result = await processPayment(donationData);
+                    
+                    // Check if API returned an authorization URL
+                    if (result.authorization_url) {
+                        // Redirect user to payment gateway (e.g., Paystack)
+                        window.location.href = result.authorization_url;
+                    } else {
+                        // Hide processing overlay if no redirect URL
+                        document.getElementById('processingOverlay').classList.remove('show');
+                        showAlert('Payment initialization failed. No redirect URL received.', 'error');
+                    }
+                    
+                } catch (error) {
+                    // Hide processing overlay
+                    document.getElementById('processingOverlay').classList.remove('show');
+                    
+                    console.error('Payment error:', error);
+                    
+                    // Show error message
+                    showAlert(
+                        error.message || 'Payment processing failed. Please try again.',
+                        'error'
+                    );
+                    
+                    // Optionally redirect to failure page
+                    // const params = new URLSearchParams({
+                    //     error: error.message || 'Unknown error',
+                    //     code: error.errorCode || 'UNKNOWN'
+                    // });
+                    // window.location.href = 'failure.html?' + params.toString();
+                }
+            }
+        });
+
+        // Initialize anonymous toggle
+        document.getElementById('anonymousCheck').addEventListener('change', toggleAnonymous);
+    </script>
+</body>
+</html>
