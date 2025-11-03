@@ -99,27 +99,35 @@
             align-items: center;
             gap: 10px;
             margin-bottom: 25px;
-            padding: 15px;
-            background: #f8f9fa;
-            border-radius: 8px;
+            padding: 18px;
+            background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+            border-radius: 10px;
             cursor: pointer;
             transition: all 0.3s ease;
+            border: 2px solid #dee2e6;
         }
 
         .anonymous-toggle:hover {
-            background: #e9ecef;
+            background: linear-gradient(135deg, #e9ecef 0%, #dee2e6 100%);
+            border-color: #667eea;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.15);
         }
 
         .anonymous-toggle input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
+            width: 22px;
+            height: 22px;
             cursor: pointer;
+            accent-color: #667eea;
         }
 
         .anonymous-toggle label {
             margin: 0;
             cursor: pointer;
             flex: 1;
+            font-size: 1.05em;
+            color: #495057;
+            font-weight: 600;
         }
 
         .donor-info {
@@ -164,6 +172,16 @@
 
         .custom-amount {
             margin-top: 15px;
+            transition: all 0.4s ease;
+            max-height: 150px;
+            opacity: 1;
+            overflow: hidden;
+        }
+
+        .custom-amount.hidden {
+            max-height: 0;
+            opacity: 0;
+            margin-top: 0;
         }
 
         .donate-btn {
@@ -344,7 +362,7 @@
                         <button type="button" class="amount-btn" data-amount="250">₦250</button>
                         <button type="button" class="amount-btn" data-amount="500">₦500</button>
                     </div>
-                    <div class="custom-amount">
+                    <div class="custom-amount" id="customAmountSection">
                         <label for="customAmount">Or enter custom amount (₦)</label>
                         <input type="number" id="customAmount" placeholder="Enter amount" min="1" step="0.01">
                         <div class="error-message" id="amountError">Please select or enter an amount</div>
@@ -393,6 +411,9 @@
                 this.classList.add('selected');
                 selectedAmount = this.dataset.amount;
                 document.getElementById('customAmount').value = '';
+                
+                // Hide custom amount input when preset amount is selected
+                document.getElementById('customAmountSection').classList.add('hidden');
             });
         });
 
@@ -402,6 +423,12 @@
                 document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
                 selectedAmount = this.value;
             }
+        });
+
+        // Show custom amount field again when user focuses on it
+        document.getElementById('customAmount').addEventListener('focus', function() {
+            document.getElementById('customAmountSection').classList.remove('hidden');
+            document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
         });
 
         // Process payment through API
