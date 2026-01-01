@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -36,6 +37,7 @@
                 opacity: 0;
                 transform: translateY(30px);
             }
+
             to {
                 opacity: 1;
                 transform: translateY(0);
@@ -277,8 +279,13 @@
         }
 
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
         }
 
         .processing-content h3 {
@@ -314,6 +321,7 @@
         }
     </style>
 </head>
+
 <body>
     <div class="processing-overlay" id="processingOverlay">
         <div class="processing-content">
@@ -331,7 +339,7 @@
 
         <div class="form-container">
             <div id="alertBox" class="alert"></div>
-            
+
             <form id="donationForm">
                 <div class="anonymous-toggle" onclick="toggleAnonymous()">
                     <input type="checkbox" id="anonymousCheck">
@@ -372,7 +380,8 @@
                 <button type="submit" class="donate-btn">Donate Now</button>
 
                 <div class="impact-note">
-                    Your generosity helps us provide essential services to communities in need. Thank you for your support!
+                    Your generosity helps us provide essential services to communities in need. Thank you for your
+                    support!
                 </div>
             </form>
         </div>
@@ -380,7 +389,7 @@
 
     <script>
         let selectedAmount = null;
-        const API_BASE_URL = 'https://localhost:7200/api/Donations';
+        const API_BASE_URL = 'http://randuom.runasp.net/api/Donations';
 
         // Show alert message
         function showAlert(message, type = 'error') {
@@ -396,7 +405,7 @@
         function toggleAnonymous() {
             const checkbox = document.getElementById('anonymousCheck');
             const donorInfo = document.getElementById('donorInfo');
-            
+
             if (checkbox.checked) {
                 donorInfo.classList.add('hidden');
             } else {
@@ -406,19 +415,19 @@
 
         // Handle amount button selection
         document.querySelectorAll('.amount-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
+            btn.addEventListener('click', function () {
                 document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
                 this.classList.add('selected');
                 selectedAmount = this.dataset.amount;
                 document.getElementById('customAmount').value = '';
-                
+
                 // Hide custom amount input when preset amount is selected
                 document.getElementById('customAmountSection').classList.add('hidden');
             });
         });
 
         // Handle custom amount input
-        document.getElementById('customAmount').addEventListener('input', function() {
+        document.getElementById('customAmount').addEventListener('input', function () {
             if (this.value) {
                 document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
                 selectedAmount = this.value;
@@ -426,7 +435,7 @@
         });
 
         // Show custom amount field again when user focuses on it
-        document.getElementById('customAmount').addEventListener('focus', function() {
+        document.getElementById('customAmount').addEventListener('focus', function () {
             document.getElementById('customAmountSection').classList.remove('hidden');
             document.querySelectorAll('.amount-btn').forEach(b => b.classList.remove('selected'));
         });
@@ -435,10 +444,10 @@
         async function processPayment(donationData) {
             try {
                 console.log('Sending donation data:', donationData);
-                
+
                 const response = await fetch(`${API_BASE_URL}/initiate`, {
                     method: 'POST',
-                    headers: { 
+                    headers: {
                         'Content-Type': 'application/json',
                         'Accept': 'application/json'
                     },
@@ -451,14 +460,14 @@
                 if (!response.ok) {
                     const errorText = await response.text();
                     console.error('Error response:', errorText);
-                    
+
                     let errorData = {};
                     try {
                         errorData = JSON.parse(errorText);
                     } catch (e) {
                         errorData = { message: errorText };
                     }
-                    
+
                     throw {
                         message: errorData.message || errorData.title || `Server error: ${response.status}`,
                         errorCode: errorData.errorCode || response.status,
@@ -470,7 +479,7 @@
                 const result = await response.json();
                 console.log('Success response:', result);
                 return result;
-                
+
             } catch (error) {
                 console.error('Payment processing error:', error);
                 // Handle network errors
@@ -485,18 +494,18 @@
         }
 
         // Form submission
-        document.getElementById('donationForm').addEventListener('submit', async function(e) {
+        document.getElementById('donationForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            
+
             // Reset error messages
             document.querySelectorAll('.error-message').forEach(el => el.classList.remove('show'));
             document.getElementById('alertBox').classList.remove('show');
-            
+
             const isAnonymous = document.getElementById('anonymousCheck').checked;
             const name = document.getElementById('name').value.trim();
             const email = document.getElementById('email').value.trim();
             const customAmount = document.getElementById('customAmount').value;
-            
+
             let isValid = true;
 
             // Validate donor info if not anonymous
@@ -533,12 +542,12 @@
                 try {
                     // Process payment through your API
                     const result = await processPayment(donationData);
-                    
+
                     // Check if API returned an authorization URL
                     if (result.authorization_url) {
                         // Store amount in sessionStorage so success page can display it
                         sessionStorage.setItem('donationAmount', finalAmount);
-                        
+
                         // Redirect user to payment gateway (e.g., Paystack)
                         window.location.href = result.authorization_url;
                     } else {
@@ -546,19 +555,19 @@
                         document.getElementById('processingOverlay').classList.remove('show');
                         showAlert('Payment initialization failed. No redirect URL received.', 'error');
                     }
-                    
+
                 } catch (error) {
                     // Hide processing overlay
                     document.getElementById('processingOverlay').classList.remove('show');
-                    
+
                     console.error('Payment error:', error);
-                    
+
                     // Show error message
                     showAlert(
                         error.message || 'Payment processing failed. Please try again.',
                         'error'
                     );
-                    
+
                     // Optionally redirect to failure page
                     // const params = new URLSearchParams({
                     //     error: error.message || 'Unknown error',
@@ -573,4 +582,5 @@
         document.getElementById('anonymousCheck').addEventListener('change', toggleAnonymous);
     </script>
 </body>
+
 </html>
